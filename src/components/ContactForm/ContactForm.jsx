@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { useState } from 'react';
 import {
   FormContainer,
   WrapInput,
@@ -8,80 +8,71 @@ import {
 import { nanoid } from 'nanoid';
 import PropTypes from 'prop-types';
 
-const INITIAL_STATE = {
-  name: '',
-  number: '',
-};
+import React from 'react';
 
-class ContactForm extends Component {
-  state = { ...INITIAL_STATE };
+const ContactForm = ({ onSubmit }) => {
+  const [name, setName] = useState('');
+  const [number, setNumber] = useState('');
 
-  //введені данні
-  handleInput = ({ target: { name, value } }) => {
-    console.log('evt.target', name);
-    this.setState({
-      [name]: value,
-    });
+  const handleInput = ({ target: { name, value } }) => {
+    if (name === 'name') setName(value);
+    if (name === 'number') setNumber(value);
   };
 
-  //відправка введених данних
-  handleSubmit = evt => {
+  const handleSubmit = evt => {
     evt.preventDefault();
 
-    this.props.onSubmit({
+    onSubmit({
       id: nanoid(),
-      name: this.state.name,
-      number: this.state.number,
+      name: name,
+      number: number,
     });
 
-    this.reset();
+    reset();
+  };
+  // Не працює
+  const reset = () => {
+    setName('');
+    setNumber('');
   };
 
-  // Очистка форми після сабміту
-  reset() {
-    this.setState({
-      ...INITIAL_STATE,
-    });
-  }
-  render() {
-    return (
-      <FormContainer>
-        <form className="form" onSubmit={this.handleSubmit}>
-          <WrapInput>
-            <label htmlFor="exampleInputEmail1" className="form-label">
-              Name
-            </label>
-            <Input
-              type="text"
-              name="name"
-              pattern="^[a-zA-Zа-яА-Я]+(([' \-][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-              title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
-              required
-              onChange={this.handleInput}
-              value={this.state.name}
-            />
-          </WrapInput>
-          <WrapInput>
-            <label htmlFor="exampleInputNumber" className="form-label">
-              Number
-            </label>
-            <Input
-              type="tel"
-              name="number"
-              pattern="\+?\d{1,4}?[ .\-\s]?\(?\d{1,3}?\)?[ .\-\s]?\d{1,4}[ .\-\s]?\d{1,4}[ .\-\s]?\d{1,9}"
-              title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
-              required
-              onChange={this.handleInput}
-              value={this.state.number}
-            />
-          </WrapInput>
-          <BtnSubmit type="submit">Add contact</BtnSubmit>
-        </form>
-      </FormContainer>
-    );
-  }
-}
-
-ContactForm.propTypes = { onSubmit: PropTypes.func };
+  return (
+    <FormContainer>
+      <form className="form" onSubmit={handleSubmit}>
+        <WrapInput>
+          <label htmlFor="exampleInputEmail1" className="form-label">
+            Name
+          </label>
+          <Input
+            type="text"
+            name="name"
+            pattern="^[a-zA-Zа-яА-Я]+(([' \-][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
+            title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
+            required
+            onChange={handleInput}
+            value={name}
+          />
+        </WrapInput>
+        <WrapInput>
+          <label htmlFor="exampleInputNumber" className="form-label">
+            Number
+          </label>
+          <Input
+            type="tel"
+            name="number"
+            pattern="\+?\d{1,4}?[ .\-\s]?\(?\d{1,3}?\)?[ .\-\s]?\d{1,4}[ .\-\s]?\d{1,4}[ .\-\s]?\d{1,9}"
+            title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
+            required
+            onChange={handleInput}
+            value={number}
+          />
+        </WrapInput>
+        <BtnSubmit type="submit">Add contact</BtnSubmit>
+      </form>
+    </FormContainer>
+  );
+};
 
 export default ContactForm;
+
+ContactForm.propTypes = { onSubmit: PropTypes.func };

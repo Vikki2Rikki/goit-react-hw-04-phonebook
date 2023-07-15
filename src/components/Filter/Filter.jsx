@@ -1,32 +1,25 @@
-import { Component } from 'react';
+import { useState } from 'react';
 import { FilterWrap } from './Filter.styled';
 import PropTypes from 'prop-types';
+import React from 'react';
 
-class Filter extends Component {
-  state = { filter: '' };
+const Filter = ({ handelChangeFilter }) => {
+  const [filter, setFilter] = useState('');
 
-  handleChange = evt => {
-    this.setState({
-      [evt.target.name]: evt.target.value,
-    });
-    this.props.onChange({ [evt.target.name]: evt.target.value });
+  const handleChange = evt => {
+    console.log('evt.target.value', evt.target.value);
+    setFilter(evt.target.value);
+    handelChangeFilter(filter);
   };
 
-  render() {
-    return (
-      <FilterWrap>
-        <label>Find contacts by name</label>
-        <input
-          type="text"
-          name="filter"
-          value={this.state.filter}
-          onChange={this.handleChange}
-        />
-      </FilterWrap>
-    );
-  }
-}
-
-Filter.propTypes = { onChange: PropTypes.func };
+  return (
+    <FilterWrap>
+      <label>Find contacts by name</label>
+      <input type="text" name="filter" value={filter} onChange={handleChange} />
+    </FilterWrap>
+  );
+};
 
 export default Filter;
+
+Filter.propTypes = { onChangeFilter: PropTypes.func };
