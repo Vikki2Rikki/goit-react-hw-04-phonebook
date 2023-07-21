@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FilterWrap } from './Filter.styled';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -7,10 +7,20 @@ const Filter = ({ handelChangeFilter }) => {
   const [filter, setFilter] = useState('');
 
   const handleChange = evt => {
-    console.log('evt.target.value', evt.target.value);
-    setFilter(evt.target.value);
-    handelChangeFilter(filter);
+    const filterText = evt.target.value;
+    setFilter(filterText);
   };
+
+  useEffect(() => {
+    handelChangeFilter(filter);
+  }, [handelChangeFilter, filter]);
+
+  // або варіант 2
+  // const handleChange = evt => {
+  //   const filterText = evt.target.value;
+  //   setFilter(filterText);
+  //   handelChangeFilter(filterText);
+  // };
 
   return (
     <FilterWrap>

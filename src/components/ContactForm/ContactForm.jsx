@@ -30,7 +30,7 @@ const ContactForm = ({ onSubmit }) => {
 
     reset();
   };
-  // Не працює
+
   const reset = () => {
     setName('');
     setNumber('');

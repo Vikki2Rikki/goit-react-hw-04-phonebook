@@ -3,12 +3,16 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 const ContactList = ({ contacts, filter, onDeleteContact }) => {
-  const contactList = filter
-    ? contacts.filter(({ name }) => name.toLowerCase().includes(filter))
-    : contacts;
+  const contactList = () => {
+    console.log(filter);
+    return filter
+      ? contacts.filter(({ name }) => name.toLowerCase().includes(filter))
+      : contacts;
+  };
+
   return (
     <List>
-      {contactList.map(({ id, name, number }) => (
+      {contactList().map(({ id, name, number }) => (
         <ContacItem key={id}>
           {`${name}: ${number}`}
           <DeleteBtn type="submit" onClick={() => onDeleteContact(id)}>
